@@ -1,0 +1,129 @@
+项目目标：
+    1）熟练掌握ajax的使用 （*****）
+    2）熟悉前后端数据交互（***）
+    3）熟悉elementui 框架的使用（***）
+    4）熟悉vue的简单使用（***）
+    5）了解后端增删改查的逻辑
+    6）对整个项目的前后端结构和逻辑都有一个认识。
+
+    难点： 分页（后端） 模糊查询（后端）
+
+
+DAY01需求：
+    A 搭建项目环境
+        1 使用express搭建项目环境
+            express smms -e
+
+        2 进入项目根目录 一次性安装所有依赖
+            cnpm i 
+
+        3 监听端口 启动服务器
+            a) 打开app.js文件  
+                app.listen(666, () => {
+                    console.log('服务器启动成功...端口：666')
+                })
+
+            b） 启动服务器
+                nodemon app
+
+    
+    B 前端资源文件都放入public， 集成elementui和vue.js
+        1 搭建前端目录结构,准备资源文件
+            images: 图片
+            js： 脚本
+            styles： 样式
+            libs：第三方库
+                elementui: 
+                    css: 样式文件
+                    fonts: 字体文件（css需要引用它,注意路径！）
+                    js:  js脚本（依赖vue.js）
+
+                vue:  vue.min.js
+
+                jquery: jquery.min.js
+
+        2 新建一个测试页面 测试环境是否搭建成功
+            注意： 主要测试elementui是否可以使用。
+    C 登录页面的布局实现
+        1 登录页面表单
+        2 水平和垂直居中
+            1） 子绝父相
+            2） left right top bottom  都设置为0
+            3） margin： auto
+
+    D 表单的基本验证：
+        1 data里面有两份数据
+            1） 双向数据绑定 主要用来取值
+                loginForm: {  
+                    username: '',  // 用户名
+                    password: '',  // 密码
+                    confirmPassword: '' // 确认密码
+                }
+            2）验证规则的数据
+                  rules: {
+                        // 验证用户名
+                        username: [
+                            {required: true, message: '请输入用户名', trigger: 'blur'}, // 非空验证
+                            {min: 5, max: 12, message: '用户名长度在 5 到 12 个字符', trigger: 'blur'} // 长度验证
+                        ],
+                        // 验证密码
+                        password: [
+                            {required: true, message: '请输入密码', trigger: 'blur'}, // 非空验证
+                            {min: 6, max: 12, message: '密码长度在 6 到 12 个字符', trigger: 'blur'} // 长度验证
+                        ],
+                        // 验证确认密码 (自定义验证规则)
+                        confirmPassword: [
+                            { validator: checkPass, trigger: 'blur' }  // 自定义验证函数
+                        ],
+                    }
+                说明：
+                    在return之前 自己写的验证函数
+                    let 验证函数的名字 = (rules, value, callback) => {
+                        // 对value判断
+                        if (value === '') {
+                            // 给出提示信息 输入框边框变红色 有一个 x
+                            callback(new Error('不能为空'))
+                        } else if (value.length < 6 || value.length > 18) {
+                             // 给出提示信息 输入框边框变红色 有一个 x
+                            callback(new Error('长度必须在6 - 18 位之间'))
+                        } else {
+                            // 成功 输入框边框变绿色 有一个√
+                            callback()
+                        }
+                    }
+
+                    rules: {
+                        要验证的字段: [
+                            {required: true, message: '提示信息', trigger: '触发方式'},   // 非空验证
+                            {min: 5, max: 12, message:'提示信息', trigger: '触发方式'},   // 长度验证
+                            {validator: 自己写的验证函数的名字, trigger: '触发方式'}
+                        ]
+                    }
+
+        2 提交表单方法
+            submitForm(formName) {
+                // $refs能够把用 ref属性声明的dom 都收集在一个对象里面
+                this.$refs[formName].validate((valid) => {
+                    // 如果valid是true 证明整个表单前端验证全部通过 允许发送给后端了
+                    if (valid) {
+                        // 收集用户输入的用户名和密码
+                        let username = this.loginForm.username;
+                        let password = this.loginForm.password;
+
+                        // 构造ajax 把用户名和密码发送给后端（等待 后端去数据库查询存不存在）
+                    } else {
+                        // valid是false 证明前端验证没有通过 不允许提交表单 不允许发给后端
+                        console.log('error submit')
+                        return false;
+                    }
+                })
+            }
+        3 重置表单：
+            resetForm(formName) {
+                // 获取整个表单 调用重置方法
+                this.$refs[formName].resetFields();  // this.$refs[formName] ==> this.$refs.loginForm
+            }
+
+
+
+    
