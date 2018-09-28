@@ -159,7 +159,7 @@ DAY02:
             4) 调用连接方法
                 connection.connect();
 
-        3）nodejs操作数据库
+        3 nodejs操作数据库
             a) 定义sql语句
                 const sqlStr = 'sql语句';
 

@@ -63,7 +63,7 @@
                                     <template slot-scope="scope">
                                         <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">
                                             <i class="el-icon-edit"></i>
-                                            编辑
+                                            修改
                                         </el-button>
                                         <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">
                                             <i class="el-icon-delete"></i>
@@ -136,7 +136,7 @@
                             alert(data.msg);
                             // 刷新页面 ？怎么刷
                             _this.getAllUsers();
-                            
+
                         } else {
                             // 否则 弹出删除失败信息 
                             alert(data.msg);
